@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday Unima Khadka 💖</title>
+
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
+
+<!-- GSAP -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/MotionPathPlugin.min.js"></script>
+
+<!-- Three.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+<style>
+:root {
+  --brown: #3E2723;
+  --light-brown: #8B6F47;
+  --pink: #FFB6C1;
+  --gold: #FFD700;
+  --glass: rgba(255, 255, 255, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Playfair Display', serif;
+  background: radial-gradient(circle at top, var(--light-brown), var(--brown));
+  color: white;
+  overflow-x: hidden;
+}
+
+#universe, #starsCanvas {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+}
+
+section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 4rem 1rem;
+  position: relative;
+  z-index: 1;
+}
+
+.glass {
+  background: var(--glass);
+  backdrop-filter: blur(18px);
+  padding: 2.5rem;
+  border-radius: 22px;
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.6);
+  text-align: center;
+  transition: transform 0.3s, box-shadow 0.3s;
+  max-width: 90%;
+  width: 100%;
+}
+
+.glass:hover {
+  transform: scale(1.03);
+}
+
+.slide {
+  position: relative;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.slide.landed {
+  box-shadow: 0 0 80px rgba(255, 182, 193, 0.9);
+  transform: scale(1.04);
+}
+
+.photo-glow {
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: radial-gradient(circle at center, rgba(255, 182, 193, 0.6), transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.heart {
+  position: absolute;
+  font-size: 2rem;
+  animation: float 10s infinite ease-in-out;
+  pointer-events: none;
+}
+
+@keyframes float {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-50px); }
+  100% { transform: translateY(0); }
+}
+
+.candles {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
+  position: relative;
+  z-index: 10;
+}
+
+.candle-wrapper {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.candle {
+  width: 30px;
+  height: 120px;
+  background: linear-gradient(#fff7d6, #ffe4a8);
+  border-radius: 10px;
+  position: relative;
+}
+
+.flame {
+  position: absolute;
+  top: -35px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 40px;
+  background: radial-gradient(circle, gold, orange);
+  border-radius: 50%;
+  animation: flicker 0.5s infinite alternate;
+}
+
+@keyframes flicker {
+  from { transform: translateX(-50%) scale(1); }
+  to { transform: translateX(-50%) scale(1.2); }
+}
+
+#secret-heart {
+  position: fixed;
+  bottom: 30px;
+  left: 30px;
+  font-size: 3rem;
+  cursor: pointer;
+  animation: pulse 2s infinite;
+  z-index: 1000;
+}
+
+@keyframes pulse {
+  50% { transform: scale(1.3); }
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+
+.card {
+  background: linear-gradient(135deg, var(--light-brown), var(--brown));
+  padding: 3rem;
+  border-radius: 25px;
+  max-width: 700px;
+  text-align: center;
+  box-shadow: 0 0 90px rgba(255, 182, 193, 0.6);
+}
+
+input, button {
+  padding: 1rem;
+  font-size: 1.1rem;
+  border-radius: 12px;
+  border: none;
+  cursor: pointer;
+  margin: 0.5rem;
+}
+
+button {
+  background: var(--pink);
+  color: var(--brown);
+  font-weight: bold;
+  transition: transform 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
+}
+
+.final-glow {
+  text-shadow: 0 0 40px rgba(255, 182, 193, 0.9);
+}
+
+#final-poem {
+  max-width: 800px;
+  line-height: 2.2;
+  margin-top: 3rem;
+}
+
+#poemText p {
+  opacity: 0;
+  transform: translateY(20px);
+  animation: fadeInUp 0.8s forwards;
+  margin-bottom: 1.5rem;
+  font-size: 1.2rem;
+}
+
+@keyframes fadeInUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#poemText p:nth-child(1) { animation-delay: 0s; }
+#poemText p:nth-child(2) { animation-delay: 0.3s; }
+#poemText p:nth-child(3) { animation-delay: 0.6s; }
+#poemText p:nth-child(4) { animation-delay: 0.9s; }
+#poemText p:nth-child(5) { animation-delay: 1.2s; }
+#poemText p:nth-child(6) { animation-delay: 1.5s; }
+#poemText p:nth-child(7) { animation-delay: 1.8s; }
+
+/* SHOOTING STAR */
+.shooting-star {
+  position: fixed;
+  width: 6px;
+  height: 6px;
+  background: radial-gradient(circle, #FFD700, rgba(255, 215, 0, 0.15));
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 3000;
+  filter: drop-shadow(0 0 14px #FFD700);
+}
+
+.shooting-star.big {
+  width: 14px;
+  height: 14px;
+  filter: drop-shadow(0 0 32px #FFD700);
+}
+
+.shooting-trail {
+  position: absolute;
+  width: 180px;
+  height: 2px;
+  background: linear-gradient(90deg, rgba(255, 215, 0, 0.9), transparent);
+  transform-origin: left center;
+}
+
+/* HEART EXPLOSION */
+.heart-pop {
+  position: fixed;
+  font-size: 1.2rem;
+  pointer-events: none;
+  z-index: 3500;
+}
+
+/* LOVE LETTER STYLES */
+.love-envelope {
+  max-width: 600px;
+  position: relative;
+  overflow: hidden;
+}
+
+.letter-content {
+  max-height: 0;
+  opacity: 0;
+  overflow: hidden;
+  transition: all 1s ease;
+  margin-top: 2rem;
+}
+
+.letter-content.open {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+.handwritten {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.3rem;
+  line-height: 2;
+  margin: 1rem 0;
+  color: var(--pink);
+}
+
+.signature {
+  text-align: right;
+  font-size: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* COUNTER DISPLAY */
+.counter-display {
+  font-size: 2.5rem;
+  font-weight: bold;
+  color: var(--gold);
+  margin: 2rem 0;
+  text-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
+}
+
+.glass-text {
+  font-style: italic;
+  color: var(--pink);
+}
+
+/* ROSE PETALS */
+.rose-petal {
+  position: fixed;
+  width: 10px;
+  height: 15px;
+  background: var(--pink);
+  border-radius: 50% 0;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ROMANTIC GLOW */
+@keyframes romantic-glow {
+  0%, 100% { text-shadow: 0 0 20px rgba(255, 182, 193, 0.5); }
+  50% { text-shadow: 0 0 40px rgba(255, 182, 193, 1), 0 0 60px rgba(255, 215, 0, 0.5); }
+}
+
+.final-glow {
+  animation: romantic-glow 3s infinite;
+}
+
+/* KISS COUNTER */
+.kiss-container {
+  max-width: 500px;
+}
+
+.kiss-lips {
+  font-size: 8rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+  display: inline-block;
+  margin: 2rem 0;
+  filter: drop-shadow(0 0 20px rgba(255, 182, 193, 0.6));
+}
+
+.kiss-lips:hover {
+  transform: scale(1.1);
+}
+
+.kiss-lips:active {
+  transform: scale(0.95);
+}
+
+.kiss-count {
+  font-size: 2rem;
+  color: var(--pink);
+  font-weight: bold;
+  margin: 1rem 0;
+  text-shadow: 0 0 15px rgba(255, 182, 193, 0.8);
+}
+
+/* FLYING KISS */
+.flying-kiss {
+  position: fixed;
+  font-size: 2.5rem;
+  pointer-events: none;
+  z-index: 4000;
+}
+
+/* WHISPER TEXT */
+.whisper-text {
+  font-family: 'Dancing Script', cursive;
+  font-size: 1.2rem;
+  color: var(--pink);
+  margin-top: 1rem;
+  font-style: italic;
+  opacity: 0.9;
+  position: relative;
+  z-index: 10;
+}
+
+/* TYPEWRITER EFFECT */
+.typing-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: var(--pink);
+  animation: blink 0.7s infinite;
+  margin-left: 2px;
+}
+
+@keyframes blink {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+
+/* ==================== FINAL RESPONSIVE POLAROID GALLERY (Zero Lag + Perfect Alignment) ==================== */
+.memory-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2.5rem;
+  padding: 2rem 1rem;
+  max-width: 1400px;
+  margin: 0 auto;
+  perspective: 1500px;
+}
+
+.memory-item.polaroid {
+  justify-self: center;
+  width: 100%;
+  max-width: 340px;
+  transform-style: preserve-3d;
+  transition: transform 0.4s ease;
+}
+
+.polaroid-frame {
+  position: relative;
+  background: #fff;
+  padding: 12px 12px 55px 12px;
+  border-radius: 10px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.35);
+  transform: rotate(var(--rotate, 0deg)) translateZ(0);
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+  will-change: transform;
+}
+
+.photo-inner {
+  position: relative;
+  overflow: hidden;
+  border-radius: 6px;
+}
+
+.photo-inner img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+  aspect-ratio: 1 / 1;
+  transition: transform 0.8s ease;
+}
+
+.photo-shine {
+  position: absolute;
+  inset: -100% -50% auto auto;
+  width: 60%;
+  height: 200%;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.35) 50%, transparent 70%);
+  transform: rotate(30deg);
+  transition: top 1s ease, left 1s ease;
+  pointer-events: none;
+}
+
+.polaroid-tape {
+  position: absolute;
+  width: 65px;
+  height: 22px;
+  background: rgba(255,255,255,0.75);
+  top: -9px;
+  border-radius: 5px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.tape1 { left: 28%; }
+.tape2 { right: 28%; transform: rotate(90deg); }
+
+.memory-caption {
+  margin-top: 1.5rem;
+  font-family: 'Dancing Script', cursive;
+  font-size: clamp(1.4rem, 4vw, 1.7rem);
+  line-height: 1.6;
+  color: var(--pink);
+  text-align: center;
+  padding: 0 0.8rem;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Optimized Effects - No heavy 3D on mobile */
+.memory-item.polaroid:hover .polaroid-frame,
+.memory-item.polaroid.touched .polaroid-frame {
+  transform: rotate(0deg) scale(1.05);
+  box-shadow: 0 30px 60px rgba(255,182,193,0.4);
+}
+
+.memory-item.polaroid:hover .photo-inner img,
+.memory-item.polaroid.touched .photo-inner img {
+  transform: scale(1.08);
+}
+
+.memory-item.polaroid:hover .photo-shine,
+.memory-item.polaroid.touched .photo-shine {
+  top: 100%;
+  left: 50%;
+}
+
+.memory-item.polaroid:hover .memory-caption,
+.memory-item.polaroid.touched .memory-caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Subtle random rotation */
+.memory-item.polaroid:nth-child(odd) { --rotate: -4deg; }
+.memory-item.polaroid:nth-child(even) { --rotate: 4deg; }
+
+/* Mobile fine-tuning */
+@media (max-width: 768px) {
+  section { padding: 3rem 1rem; }
+  .glass { padding: 1.8rem; }
+  .memory-gallery { gap: 2rem; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+  .polaroid-frame { padding: 10px 10px 50px 10px; }
+}
+
+@media (max-width: 480px) {
+  .memory-gallery { grid-template-columns: 1fr; gap: 2.5rem; }
+  .memory-caption { font-size: 1.4rem; }
+}
+</style>
+</head>
+<body>
+
+<canvas id="universe"></canvas>
+<canvas id="starsCanvas"></canvas>
+
+<!-- HERO -->
+<section>
+  <h1 class="final-glow">Happy Birthday, Unima Khadka 💕</h1>
+  <button id="startBtn" class="glass">Begin the Magic ✨</button>
+</section>
+
+<!-- ABOUT -->
+<section>
+  <div class="glass">
+    <h2>My Forever</h2>
+    <p>You're not just the person I love—you're the feeling of home when I'm lost, the warmth when the world feels cold, and the reason my heart knows what peace feels like.</p>
+  </div>
+</section>
+
+<!-- EYES -->
+<section>
+  <div class="glass">
+    <h2>Your Hazel Green Eyes 💚</h2>
+    <p>I could get lost in them for hours and still find new reasons to fall deeper. They hold galaxies I want to explore for the rest of my life.</p>
+  </div>
+</section>
+
+<!-- CANDLE -->
+<section id="candleSection">
+  <div class="candle-wrapper">
+    <h2 class="final-glow">Make a wish and blow the candles, my love 💖</h2>
+    <p class="whisper-text">Close your eyes, feel my love surrounding you, and make your heart's deepest wish...</p>
+    <div class="candles">
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+      <div class="candle"><div class="flame"></div></div>
+    </div>
+    <button id="micBtn" class="glass">Blow the Candles 🎤</button>
+  </div>
+</section>
+
+<!-- LOVE LETTER -->
+<section id="love-letter">
+  <div class="glass love-envelope">
+    <h2>💌 A Letter From My Heart</h2>
+    <button id="openLetter" class="glass">Open Letter</button>
+    <div id="letterContent" class="letter-content">
+      <p class="handwritten">My Dearest Unima,</p>
+      <p class="handwritten">Every moment with you feels like a dream I never want to wake up from. Your smile lights up my darkest days, your laugh is my favorite melody, and your presence is my home.</p>
+      <p class="handwritten">You are not just my love, you are my best friend, my confidant, my everything. I promise to love you today, tomorrow, and for all the days to come.</p>
+      <p class="handwritten">Happy Birthday, my forever love.</p>
+      <p class="handwritten signature">— Yours Always 💖</p>
+    </div>
+  </div>
+</section>
+
+<!-- MEMORIES - Final Zero-Lag Polaroid Gallery -->
+<section id="memories">
+  <h2 class="final-glow">Our Beautiful Memories 📸</h2>
+  <div class="glass">
+    <p>Hover or tap our polaroids — let the love come alive ✨</p>
+  </div>
+
+  <div class="memory-gallery">
+    <!-- Photo 1 -->
+    <div class="memory-item polaroid" data-tilt>
+      <div class="polaroid-frame">
+        <div class="photo-inner">
+          <img src="https://i.ibb.co/your-link/photo1.jpg" alt="Our first moment">
+          <div class="photo-shine"></div>
+        </div>
+        <div class="polaroid-tape tape1"></div>
+        <div class="polaroid-tape tape2"></div>
+      </div>
+      <p class="memory-caption">
+        November 24, 2025 – The day heaven sent you to me, and my heart knew it had found its home forever 💫❤️
+      </p>
+    </div>
+
+    <!-- Photo 2 -->
+    <div class="memory-item polaroid" data-tilt>
+      <div class="polaroid-frame">
+        <div class="photo-inner">
+          <img src="https://i.ibb.co/your-link/photo2.jpg" alt="Your smile">
+          <div class="photo-shine"></div>
+        </div>
+        <div class="polaroid-tape tape1"></div>
+        <div class="polaroid-tape tape2"></div>
+      </div>
+      <p class="memory-caption">
+        Your smile could light up the darkest night — it's my favorite constellation in the sky of my life 😘💕
+      </p>
+    </div>
+
+    <!-- Photo 3 -->
+    <div class="memory-item polaroid" data-tilt>
+      <div class="polaroid-frame">
+        <div class="photo-inner">
+          <img src="https://i.ibb.co/your-link/photo3.jpg" alt="Together forever">
+          <div class="photo-shine"></div>
+        </div>
+        <div class="polaroid-tape tape1"></div>
+        <div class="polaroid-tape tape2"></div>
+      </div>
+      <p class="memory-caption">
+        Every second with you feels like poetry written by the universe just for us — my eternal love 🥰💖
+      </p>
+    </div>
+
+    <!-- Add more photos by copying the block above -->
+  </div>
+</section>
+
+<!-- LOVE COUNTER -->
+<section id="love-counter">
+  <div class="glass">
+    <h2>Time Since I Fell For You ⏰</h2>
+    <div id="counter" class="counter-display"></div>
+    <p class="glass-text">And counting every precious moment...</p>
+  </div>
+</section>
+
+<!-- VIRTUAL KISS COUNTER -->
+<section id="kiss-section">
+  <div class="glass kiss-container">
+    <h2>Send Me A Kiss 💋</h2>
+    <div id="kissLips" class="kiss-lips">💋</div>
+    <div id="kissCounter" class="kiss-count">0 Kisses</div>
+    <p class="glass-text">Tap the lips to send me love</p>
+  </div>
+</section>
+
+<!-- FINAL MESSAGE -->
+<section id="final">
+  <h1 class="final-glow">Happy Birthday to My Universe 🌌</h1>
+  <p class="glass">Forever Yours 💖</p>
+</section>
+
+<!-- STARS SPELL + POEM -->
+<section id="final-poem" class="glass">
+  <h1 class="final-glow">To My Universe, Unima 🌌</h1>
+  <p id="poemText"></p>
+</section>
+
+<!-- LOCKED SECRET -->
+<div id="lock" class="overlay">
+  <div class="card">
+    <h2>🔐 Just for You</h2>
+    <input id="pwd" type="password" placeholder="Our secret…">
+    <button id="unlock">Unlock ✨</button>
+  </div>
+</div>
+
+<div id="secret" class="overlay">
+  <div class="card">
+    <h2>A Secret for You 💖</h2>
+    <p id="secretText"></p>
+    <button onclick="closeSecret()">Close ✨</button>
+  </div>
+</div>
+
+<div id="secret-heart">💗</div>
+
+<script>
+// ===== GSAP ANIMATIONS =====
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
+
+gsap.utils.toArray("section").forEach(sec => {
+  gsap.from(sec, {
+    opacity: 0,
+    y: 100,
+    scrollTrigger: {
+      trigger: sec,
+      start: "top 80%"
+    }
+  });
+});
+
+// ===== FLOATING HEARTS =====
+const heartCount = window.innerWidth < 768 ? 12 : 30;
+for (let i = 0; i < heartCount; i++) {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerText = "💖";
+  h.style.left = Math.random() * 100 + "%";
+  h.style.top = Math.random() * 100 + "%";
+  h.style.animationDelay = Math.random() * 10 + "s";
+  document.body.appendChild(h);
+}
+
+// ===== CANDLE BLOW DETECTION =====
+let blown = false;
+const micBtn = document.getElementById("micBtn");
+const lock = document.getElementById("lock");
+
+micBtn.onclick = async () => {
+  try {
+    const ctx = new AudioContext();
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mic = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    mic.connect(analyser);
+    const data = new Uint8Array(analyser.frequencyBinCount);
+    
+    function detect() {
+      analyser.getByteFrequencyData(data);
+      const avg = data.reduce((a, b) => a + b) / data.length;
+      
+      if (avg > 45 && !blown) {
+        blown = true;
+        document.querySelectorAll(".flame").forEach(f => 
+          gsap.to(f, { scale: 0, opacity: 0, duration: 0.5 })
+        );
+        setTimeout(() => lock.style.display = "flex", 1500);
+        stream.getTracks().forEach(track => track.stop());
+        return;
+      }
+      requestAnimationFrame(detect);
+    }
+    detect();
+  } catch (err) {
+    alert("Microphone access needed to blow the candles! 🎤");
+  }
+};
+
+// ===== SECRET LOCK =====
+const unlock = document.getElementById("unlock");
+const pwd = document.getElementById("pwd");
+const secret = document.getElementById("secret");
+
+unlock.onclick = () => {
+  if (pwd.value.toLowerCase() === "unima") {
+    lock.style.display = "none";
+    secret.style.display = "flex";
+    typeText();
+  } else {
+    gsap.fromTo(".card", { x: -10 }, { x: 10, repeat: 5, yoyo: true, duration: 0.1 });
+  }
+};
+
+// ===== TYPE SECRET TEXT =====
+const secretTextContent = `My Dearest Unima,
+
+There are no words big enough to hold what I feel for you. 
+
+You walked into my life and suddenly everything made sense—every hard moment I survived, every tear I cried, every night I felt alone... it was all leading me to you.
+
+You are my safe place in a chaotic world. When I'm with you, I'm not pretending. I'm not performing. I'm just... me. And somehow, that's enough for you.
+
+I promise to love you on your good days and hold you closer on your hard ones. I promise to laugh with you, dream with you, and build a life with you that feels like the greatest love story ever told.
+
+Happy Birthday, my forever love.
+
+You are my everything. 💖
+
+— Yours, always and completely`;
+
+function typeText() {
+  let i = 0;
+  const secretText = document.getElementById("secretText");
+  secretText.innerHTML = "";
+  
+  const cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  secretText.appendChild(cursor);
+  
+  const interval = setInterval(() => {
+    if (i < secretTextContent.length) {
+      secretText.insertBefore(document.createTextNode(secretTextContent[i]), cursor);
+      i++;
+    } else {
+      clearInterval(interval);
+      cursor.remove();
+    }
+  }, 20);
+}
+
+function closeSecret() {
+  secret.style.display = "none";
+  playLove();
+}
+
+// ===== MULTI-LANGUAGE I LOVE YOU =====
+function playLove() {
+  const words = [
+    "I love you",
+    "म तिमीलाई माया गर्छु",
+    "Je t'aime",
+    "Te amo",
+    "Ti amo",
+    "사랑해",
+    "愛してる",
+    "Я тебя люблю"
+  ];
+  const love = document.createElement("div");
+  love.style.cssText = "position:fixed;inset:0;display:flex;align-items:center;justify-content:center;z-index:2500;background:rgba(0,0,0,0.7);";
+  document.body.appendChild(love);
+  
+  let i = 0;
+  const interval = setInterval(() => {
+    love.innerHTML = `<h1 class="final-glow" style="font-size:3rem;">${words[i++]}</h1>`;
+    if (i >= words.length) {
+      clearInterval(interval);
+      setTimeout(() => love.remove(), 2000);
+    }
+  }, 1800);
+}
+
+// ===== THREE.JS HEART UNIVERSE =====
+const scene = new THREE.Scene();
+const cam = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+cam.position.z = window.innerWidth < 768 ? 260 : 200;
+const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById("universe"), alpha: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+if (window.innerWidth < 768) renderer.setPixelRatio(1);
+
+const hearts = [];
+for (let i = 0; i < 120; i++) {
+  const m = new THREE.Mesh(
+    new THREE.SphereGeometry(1.3, 8, 8),
+    new THREE.MeshBasicMaterial({ color: 0xffb6c1 })
+  );
+  m.position.set(
+    (Math.random() - 0.5) * 400,
+    (Math.random() - 0.5) * 400,
+    (Math.random() - 0.5) * 400
+  );
+  scene.add(m);
+  hearts.push(m);
+}
+
+function animateUniverse() {
+  requestAnimationFrame(animateUniverse);
+  hearts.forEach(h => h.rotation.y += 0.01);
+  renderer.render(scene, cam);
+}
+animateUniverse();
+
+// ===== FINAL POEM =====
+const poemLines = [
+  "Unima, when I close my eyes, it's your smile I see cutting through every shadow in my mind.",
+  "You're not just the sunrise that wakes me—you're the reason I believe tomorrow is worth waking up for.",
+  "When my thoughts get too loud and the world feels heavy, your voice is the only thing that brings me back to myself.",
+  "You don't just anchor my soul—you are the only place in this entire universe where I feel like I truly belong.",
+  "Today isn't just your birthday. It's the celebration of the moment my life changed forever, the day I found my person.",
+  "Loving you isn't something I do—it's who I am. You're in my DNA, my heartbeat, my every thought before I sleep and every reason I smile when I wake.",
+  "Forever doesn't scare me anymore, because forever with you sounds like the greatest adventure I could ever ask for. 💖"
+];
+
+const poemEl = document.getElementById("poemText");
+let poemIndex = 0;
+
+function typePoemLine(line, el, callback) {
+  let i = 0;
+  const p = document.createElement("p");
+  p.style.opacity = "0";
+  el.appendChild(p);
+  
+  gsap.to(p, { opacity: 1, duration: 0.5 });
+  
+  const cursor = document.createElement("span");
+  cursor.className = "typing-cursor";
+  p.appendChild(cursor);
+  
+  const interval = setInterval(() => {
+    if (i < line.length) {
+      p.insertBefore(document.createTextNode(line.charAt(i)), cursor);
+      i++;
+    } else {
+      clearInterval(interval);
+      cursor.remove();
+      if (callback) setTimeout(callback, 400);
+    }
+  }, 25);
+}
+
+function startPoem() {
+  if (poemIndex < poemLines.length) {
+    typePoemLine(poemLines[poemIndex], poemEl, () => {
+      poemIndex++;
+      setTimeout(startPoem, 300);
+    });
+  }
+}
+
+ScrollTrigger.create({
+  trigger: "#final-poem",
+  start: "top 80%",
+  onEnter: startPoem
+});
+
+// ===== CINEMATIC CAMERA SCROLL =====
+gsap.to(cam.position, {
+  z: 150,
+  scrollTrigger: {
+    trigger: "#final-poem",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 2
+  }
+});
+
+gsap.to(cam.rotation, {
+  x: 0.05,
+  y: 0.05,
+  scrollTrigger: {
+    trigger: "#final-poem",
+    start: "top bottom",
+    end: "bottom top",
+    scrub: 2
+  }
+});
+
+// ===== STARS SPELL UNIMA KHADKA =====
+const starsCanvas = document.getElementById('starsCanvas');
+const starScene = new THREE.Scene();
+const starCam = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 1, 1000);
+starCam.position.z = 150;
+const starRenderer = new THREE.WebGLRenderer({ canvas: starsCanvas, alpha: true });
+starRenderer.setSize(window.innerWidth, window.innerHeight);
+
+const particleCount = 1000;
+const particles = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3);
+
+for (let i = 0; i < particleCount; i++) {
+  positions[i * 3] = (Math.random() - 0.5) * 200;
+  positions[i * 3 + 1] = (Math.random() - 0.5) * 100;
+  positions[i * 3 + 2] = (Math.random() - 0.5) * 100;
+}
+
+particles.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+const particleMaterial = new THREE.PointsMaterial({
+  color: 0xFFD700,
+  size: 2,
+  transparent: true,
+  opacity: 0.8
+});
+const particleSystem = new THREE.Points(particles, particleMaterial);
+starScene.add(particleSystem);
+
+function animateStars() {
+  requestAnimationFrame(animateStars);
+  particleSystem.rotation.y += 0.002;
+  starRenderer.render(starScene, starCam);
+}
+animateStars();
+
+// ===== SHOOTING STAR INTERACTION =====
+function getUnimaTarget() {
+  return {
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2
+  };
+}
+
+function vibrate(ms = 20) {
+  if (navigator.vibrate) navigator.vibrate(ms);
+}
+
+function getNearestPhoto(x, y) {
+  const slides = [...document.querySelectorAll(".slide")];
+  let closest = null;
+  let minDist = Infinity;
+
+  slides.forEach(slide => {
+    const r = slide.getBoundingClientRect();
+    const cx = r.left + r.width / 2;
+    const cy = r.top + r.height / 2;
+    const d = Math.hypot(cx - x, cy - y);
+    if (d < minDist) {
+      minDist = d;
+      closest = slide;
+    }
+  });
+
+  return minDist < 220 ? closest : null;
+}
+
+function landStarInPhoto(star, photo) {
+  const glow = photo.querySelector(".photo-glow");
+  photo.classList.add("landed");
+
+  gsap.to(glow, {
+    opacity: 1,
+    duration: 0.6,
+    yoyo: true,
+    repeat: 1
+  });
+
+  for (let i = 0; i < 6; i++) {
+    const h = document.createElement("div");
+    h.innerText = "💖";
+    h.style.position = "absolute";
+    h.style.left = 50 + Math.random() * 40 - 20 + "%";
+    h.style.top = 50 + Math.random() * 40 - 20 + "%";
+    h.style.fontSize = "1.5rem";
+    photo.appendChild(h);
+
+    gsap.to(h, {
+      y: -30 - Math.random() * 20,
+      opacity: 0,
+      scale: 1.5,
+      duration: 1.2,
+      ease: "power2.out",
+      onComplete: () => h.remove()
+    });
+  }
+
+  setTimeout(() => photo.classList.remove("landed"), 1600);
+}
+
+function explodeHearts(x, y) {
+  const memorySection = document.getElementById("memories");
+  if (!memorySection) return;
+
+  const rect = memorySection.getBoundingClientRect();
+  if (y < rect.top || y > rect.bottom) return;
+
+  for (let i = 0; i < 8; i++) {
+    const h = document.createElement("div");
+    h.className = "heart-pop";
+    h.innerText = "💖";
+    h.style.left = x + "px";
+    h.style.top = y + "px";
+    document.body.appendChild(h);
+
+    gsap.to(h, {
+      x: (Math.random() - 0.5) * 120,
+      y: -80 - Math.random() * 80,
+      opacity: 0,
+      scale: 1.6,
+      duration: 1.4,
+      ease: "power2.out",
+      onComplete: () => h.remove()
+    });
+  }
+}
+
+function createShootingStar(x, y, isBig = false) {
+  const star = document.createElement("div");
+  star.className = "shooting-star" + (isBig ? " big" : "");
+  star.style.left = x + "px";
+  star.style.top = y + "px";
+
+  const trail = document.createElement("div");
+  trail.className = "shooting-trail";
+  star.appendChild(trail);
+  document.body.appendChild(star);
+
+  const target = getUnimaTarget();
+  const midX = (x + target.x) / 2 + (Math.random() * 200 - 100);
+  const midY = (y + target.y) / 2 - 180;
+
+  gsap.to(star, {
+    motionPath: {
+      path: [
+        { x: 0, y: 0 },
+        { x: midX - x, y: midY - y },
+        { x: target.x - x, y: target.y - y }
+      ],
+      curviness: 2
+    },
+    opacity: 0,
+    scale: isBig ? 0.9 : 0.6,
+    duration: isBig ? 2.4 : 1.4,
+    ease: "power3.out",
+    onComplete: () => {
+      const photo = getNearestPhoto(x, y);
+      if (photo) {
+        landStarInPhoto(star, photo);
+      }
+      star.remove();
+    }
+  });
+
+  gsap.fromTo(trail, { scaleX: 0 }, { scaleX: 1, duration: 0.5 });
+
+  vibrate(isBig ? 40 : 20);
+  explodeHearts(x, y);
+}
+
+// ===== LONG PRESS + TAP HANDLING =====
+let pressTimer = null;
+let isLong = false;
+
+function startPress(x, y) {
+  isLong = false;
+  pressTimer = setTimeout(() => {
+    isLong = true;
+    createShootingStar(x, y, true);
+  }, 600);
+}
+
+function endPress(x, y) {
+  clearTimeout(pressTimer);
+  if (!isLong) {
+    createShootingStar(x, y, false);
+  }
+}
+
+document.addEventListener("mousedown", e => startPress(e.clientX, e.clientY));
+document.addEventListener("mouseup", e => endPress(e.clientX, e.clientY));
+
+document.addEventListener("touchstart", e => {
+  const t = e.touches[0];
+  startPress(t.clientX, t.clientY);
+}, { passive: true });
+
+document.addEventListener("touchend", e => {
+  const t = e.changedTouches[0];
+  endPress(t.clientX, t.clientY);
+}, { passive: true });
+
+// ===== SECRET HEART CLICK =====
+document.getElementById("secret-heart").onclick = () => {
+  lock.style.display = "flex";
+};
+
+// ===== LOVE LETTER =====
+const openLetter = document.getElementById("openLetter");
+const letterContent = document.getElementById("letterContent");
+
+openLetter.onclick = () => {
+  letterContent.classList.toggle("open");
+  openLetter.textContent = letterContent.classList.contains("open") ? "Close Letter 💌" : "Open Letter";
+  
+  if (letterContent.classList.contains("open")) {
+    for (let i = 0; i < 30; i++) {
+      setTimeout(() => {
+        createShootingStar(
+          Math.random() * window.innerWidth,
+          Math.random() * window.innerHeight,
+          false
+        );
+      }, i * 100);
+    }
+  }
+};
+
+// ===== LOVE COUNTER =====
+const startDate = new Date("2025-11-24T00:00:00");
+
+function updateCounter() {
+  const now = new Date();
+  const diff = now - startDate;
+  
+  if (diff < 0) {
+    document.getElementById("counter").innerHTML = `<div>Our love story begins soon... 💕</div>`;
+    return;
+  }
+  
+  const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+  
+  document.getElementById("counter").innerHTML = `
+    <div>${days} Days</div>
+    <div>${hours}h ${minutes}m ${seconds}s</div>
+  `;
+}
+
+setInterval(updateCounter, 1000);
+updateCounter();
+
+// ===== FALLING ROSE PETALS =====
+function createRosePetal() {
+  const petal = document.createElement("div");
+  petal.className = "rose-petal";
+  petal.style.left = Math.random() * window.innerWidth + "px";
+  petal.style.top = "-20px";
+  document.body.appendChild(petal);
+  
+  gsap.to(petal, {
+    y: window.innerHeight + 50,
+    x: "random(-100, 100)",
+    rotation: "random(0, 360)",
+    duration: "random(8, 15)",
+    ease: "none",
+    onComplete: () => petal.remove()
+  });
+}
+
+setInterval(createRosePetal, 2000);
+for (let i = 0; i < 10; i++) {
+  setTimeout(createRosePetal, i * 300);
+}
+
+// ===== VIRTUAL KISS COUNTER =====
+let kissCount = 0;
+const kissLips = document.getElementById("kissLips");
+const kissCounterEl = document.getElementById("kissCounter");
+
+if (localStorage.getItem("kissCount")) {
+  kissCount = parseInt(localStorage.getItem("kissCount"));
+  kissCounterEl.textContent = kissCount + " Kisses";
+}
+
+kissLips.onclick = (e) => {
+  kissCount++;
+  kissCounterEl.textContent = kissCount + " Kisses";
+  localStorage.setItem("kissCount", kissCount);
+  
+  vibrate(50);
+  
+  const flyingKiss = document.createElement("div");
+  flyingKiss.className = "flying-kiss";
+  flyingKiss.innerText = "💋";
+  flyingKiss.style.left = e.clientX + "px";
+  flyingKiss.style.top = e.clientY + "px";
+  document.body.appendChild(flyingKiss);
+  
+  gsap.to(flyingKiss, {
+    x: window.innerWidth / 2 - e.clientX,
+    y: window.innerHeight / 2 - e.clientY,
+    scale: 3,
+    opacity: 0,
+    duration: 1.5,
+    ease: "power2.out",
+    onComplete: () => flyingKiss.remove()
+  });
+  
+  for (let i = 0; i < 12; i++) {
+    const heart = document.createElement("div");
+    heart.className = "heart-pop";
+    heart.innerText = ["💖", "💕", "💗", "💓"][Math.floor(Math.random() * 4)];
+    heart.style.left = e.clientX + "px";
+    heart.style.top = e.clientY + "px";
+    document.body.appendChild(heart);
+    
+    gsap.to(heart, {
+      x: (Math.random() - 0.5) * 200,
+      y: -100 - Math.random() * 100,
+      rotation: Math.random() * 360,
+      opacity: 0,
+      scale: 2,
+      duration: 1.5,
+      ease: "power2.out",
+      onComplete: () => heart.remove()
+    });
+  }
+  
+  gsap.fromTo(kissLips, 
+    { scale: 1, rotation: 0 },
+    { scale: 1.3, rotation: 15, duration: 0.1, yoyo: true, repeat: 1 }
+  );
+  
+  if (kissCount % 10 === 0) {
+    const messages = [
+      "Every kiss from you feels like the first time all over again 💖",
+      "I'd wait a thousand years just to feel your love like this 💕",
+      "You make my soul dance in ways I didn't know were possible 💗",
+      "If I could give you one thing, it would be the ability to see yourself through my eyes 💓",
+      "In a world full of temporary things, you are my forever 💝",
+      "Being loved by you is the greatest privilege of my life 💞"
+    ];
+    
+    const msg = document.createElement("div");
+    msg.style.cssText = "position:fixed;top:20%;left:50%;transform:translateX(-50%);font-size:2rem;color:var(--pink);z-index:5000;text-align:center;padding:2rem;background:rgba(0,0,0,0.7);border-radius:20px;";
+    msg.innerHTML = messages[Math.floor(Math.random() * messages.length)];
+    document.body.appendChild(msg);
+    
+    gsap.to(msg, {
+      opacity: 0,
+      y: -50,
+      duration: 3,
+      delay: 2,
+      onComplete: () => msg.remove()
+    });
+  }
+};
+
+// ===== ROMANTIC MUSIC AMBIANCE =====
+const romanticMood = document.createElement("audio");
+romanticMood.loop = true;
+romanticMood.volume = 0.15;
+
+document.body.addEventListener("click", () => {
+  romanticMood.play().catch(() => {});
+}, { once: true });
+
+// ===== RESPONSIVE HANDLING =====
+window.addEventListener('resize', () => {
+  cam.aspect = window.innerWidth / window.innerHeight;
+  cam.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  
+  starCam.aspect = window.innerWidth / window.innerHeight;
+  starCam.updateProjectionMatrix();
+  starRenderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ===== FINAL OPTIMIZED GSAP PHOTO ANIMATIONS (Zero Lag) =====
+gsap.utils.toArray('.memory-item.polaroid[data-tilt]').forEach(item => {
+  const frame = item.querySelector('.polaroid-frame');
+  const img = item.querySelector('.photo-inner img');
+  let rafId = null;
+
+  const handleMove = (e) => {
+    if (window.innerWidth < 768) return;
+
+    const rect = frame.getBoundingClientRect();
+    const x = e.clientX;
+    const y = e.clientY;
+
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
+    const dx = (x - cx) / (rect.width / 2);
+    const dy = (y - cy) / (rect.height / 2);
+
+    const tiltX = dy * 12;
+    const tiltY = -dx * 12;
+
+    cancelAnimationFrame(rafId);
+    rafId = requestAnimationFrame(() => {
+      frame.style.transform = `rotateX(${tiltX}deg) rotateY(${tiltY}deg) scale(1.03)`;
+    });
+  };
+
+  const handleLeave = () => {
+    cancelAnimationFrame(rafId);
+    frame.style.transform = 'rotateX(0) rotateY(0) scale(1)';
+  };
+
+  if (window.innerWidth >= 768) {
+    item.addEventListener('mousemove', handleMove);
+    item.addEventListener('mouseleave', handleLeave);
+  }
+
+  item.addEventListener('touchstart', () => {
+    item.classList.add('touched');
+  }, { passive: true });
+
+  item.addEventListener('touchend', () => {
+    item.classList.remove('touched');
+  });
+
+  item.addEventListener('click', () => {
+    const burstCount = window.innerWidth < 768 ? 10 : 18;
+    const rect = frame.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+
+    for (let i = 0; i < burstCount; i++) {
+      const heart = document.createElement('div');
+      heart.innerText = ['💖','💕','💗','💞','💘'][Math.floor(Math.random()*5)];
+      heart.className = 'heart-pop';
+      heart.style.left = centerX + 'px';
+      heart.style.top = centerY + 'px';
+      heart.style.fontSize = gsap.utils.random(1.4, 2.6) + 'rem';
+      document.body.appendChild(heart);
+
+      gsap.to(heart, {
+        x: gsap.utils.random(-180, 180),
+        y: gsap.utils.random(-160, -320),
+        rotation: gsap.utils.random(-540, 540),
+        scale: gsap.utils.random(1.3, 2.5),
+        opacity: 0,
+        duration: gsap.utils.random(1.5, 2.2),
+        ease: "power2.out",
+        onComplete: () => heart.remove()
+      });
+    }
+  });
+});
+
+// Smooth entrance
+ScrollTrigger.create({
+  trigger: "#memories",
+  start: "top 90%",
+  onEnter: () => {
+    gsap.to(".polaroid-frame", {
+      y: 0,
+      opacity: 1,
+      scale: 1,
+      rotation: 0,
+      duration: 1,
+      stagger: { amount: 0.6 },
+      ease: "power3.out"
+    });
+  }
+});
+
+gsap.set(".polaroid-frame", { y: 60, opacity: 0, scale: 0.9 });
+
+</script>
+</body>
+</html>
